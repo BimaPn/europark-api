@@ -17,5 +17,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'silly guy',
             'email' => 'michel@gmail.com',
         ]);
+        $this->call(ScheduleSeeder::class);
+        $this->call(TicketPricingSeeder::class);
     }
 }

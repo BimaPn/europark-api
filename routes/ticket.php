@@ -1,9 +1,10 @@
-// <?php
+<?php
 //
 // use App\Http\Controllers\QuizQuestionController;
 // use App\Http\Controllers\CategoryController;
 // use App\Http\Controllers\QuizController;
-// use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TicketController;
+use Illuminate\Support\Facades\Route;
 //
 // Route::group([
 //     'middleware' => 'auth:api',
@@ -25,3 +26,11 @@
 // Route::get("/questions/{quizQuestion}/get",[QuizQuestionController::class,"show"])->middleware("api");
 // Route::put("/questions/{quizQuestion}/update",[QuizQuestionController::class,"update"])->middleware("api");
 // Route::delete("/questions/{quizQuestion}/delete",[QuizQuestionController::class,"destroy"])->middleware("api");
+Route::group([
+    'prefix' => 'tickets'
+], function ($router) {
+    Route::get("/{ticket}/get",[TicketController::class,"show"])->middleware("auth:api");
+    Route::post("/create",[TicketController::class,"store"]);
+    Route::get("/session/check",[TicketController::class,"checkSession"]);
+    Route::post("/session/create",[TicketController::class,"storeSession"]);
+});

@@ -49,7 +49,7 @@ class AuthenticatedSessionController extends Controller
 
     protected function createNewToken($token){
         return response()->json([
-            'access_token' => $token,
+            'accessToken' => $token,
             'id' => auth()->user()->id,
             'name' =>  auth()->user()->name,
             'email' => auth()->user()->email,
