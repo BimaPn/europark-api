@@ -7,6 +7,7 @@ use App\Models\Schedule;
 use App\Http\Requests\StoreTicketRequest;
 use App\Models\Ticket;
 use App\Models\TicketPricing;
+use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
@@ -34,8 +35,13 @@ class TicketController extends Controller
     {
         //
     }
-    public function checkSession()
+    public function checkSession(Request $request)
     {
+        $session = $request->session()->get('ticket');
+        $session["schedule"] = Schedule::find($session["schedule_id"])->select("id","schedule")->first();
+        return response()->json([
+            "result" => $session
+        ]);
 
     }
     public function storeSession(StoreTicketSessionRequest $request)
