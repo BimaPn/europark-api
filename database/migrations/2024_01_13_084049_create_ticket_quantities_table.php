@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ticket_quantities', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignUuid('ticket_id');
             $table->foreignId('ticket_pricing_id');
             $table->integer('quantity');
+            $table->bigInteger("total_price");
             $table->timestamps();
         });
     }

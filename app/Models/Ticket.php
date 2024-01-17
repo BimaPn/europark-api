@@ -10,6 +10,7 @@ class Ticket extends Model
 {
     use HasFactory, UUID;
 
+    protected $guarded = ["id"];
     protected $keyType = 'string';
     protected $primaryKey = 'id';
     public $incrementing = false;

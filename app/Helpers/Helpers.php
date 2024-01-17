@@ -2,15 +2,15 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class Helpers
 {
+    public static function generateUniqueFileName($originalName)
+    {
+        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        $uniqueName = Str::uuid()->toString() . '.' . $extension;
 
-    public static function deleteMedia($filePath) {
-        $path = parse_url($filePath);
-        $storagePath = public_path();
-        $fullPath = $storagePath . str_replace('/','\\',$path['path']);
-        File::delete($fullPath);
+        return $uniqueName;
     }
 }

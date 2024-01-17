@@ -15,13 +15,12 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('email');
-            $table->string('indentity_card_picture');
+            $table->string('identity_card_picture');
             $table->string('whatsapp_number');
             $table->string('institute_name')->nullable();
             $table->string('institute_address')->nullable();
             $table->date('visit_date');
             $table->foreignId('schedule_id');
-            $table->bigInteger('total_price');
             $table->timestamps();
         });
     }
