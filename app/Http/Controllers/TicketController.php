@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTicketSessionRequest;
+use App\Mail\SendTicket;
 use App\Models\Schedule;
 use App\Http\Requests\StoreTicketRequest;
 use App\Models\Ticket;
@@ -11,6 +12,7 @@ use App\Models\TicketQuantity;
 use Illuminate\Http\Request;
 use App\Helpers\Helpers;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class TicketController extends Controller
 {
@@ -50,27 +52,58 @@ class TicketController extends Controller
             if($quantity["quantity"] > 0) {
                 TicketQuantity::create([
                     "ticket_id" => $ticket->id,
-                    "ticket_pricing_id" => $quantity["id"],
+                    "type" => $quantity["type"],
                     "quantity" => $quantity["quantity"],
                     "total_price" => ($quantity["quantity"] * $quantity["price"])
                 ]);
             }
         }
         $request->session()->forget("ticket");
+
+        $url = env("FRONTEND_URL","http://localhost:3000") . "/tickets/$ticket->id/verify";
+        Mail::to($ticket->email)->send(new SendTicket($ticket->id, $ticket->name, $url));
+
         return response()->json([
             "message" => "Success.",
-            "ticket" => $ticket
         ]);
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Ticket $ticket)
+    public function getTicket (Ticket $ticket)
     {
-        //
+        $result = [
+            "name" => $ticket->name,
+            "email" => $ticket->email,
+            "visit_date" => $ticket->visit_date,
+        ];
+
+        $quantity = TicketQuantity::where("ticket_id",$ticket->id)->get();
+        foreach ($quantity as $item) {
+            $result["quantity"][] = [
+                "type" => $item["type"],
+                "quantity" => $item["quantity"]
+            ];
+        }
+        return response()->json([
+            "result" => $result,
+        ]);
     }
+
+    public function verifyTicket (Ticket $ticket)
+    {
+        if($ticket->verified === 1) {
+            return response()->json([
+                "message" => "Ticket is already verified"
+            ]);
+        }
+        $ticket->verified = true;
+        $ticket->update();
+        return response()->json([
+            "message" => "Success",
+            "ticket" => $ticket
+        ]);
+    }
+
     public function checkSession(Request $request)
     {
         $session = $request->session()->get('ticket');

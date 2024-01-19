@@ -18,9 +18,11 @@ class SendTicket extends Mailable
      */
     public $name;
     public $url;
+    public $ticketId;
 
-    public function __construct($name, $url)
+    public function __construct($ticketId, $name, $url)
     {
+        $this->ticketId = $ticketId;
         $this->name = $name;
         $this->url = $url;
     }

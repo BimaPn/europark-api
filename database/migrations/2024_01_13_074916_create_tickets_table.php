@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('institute_address')->nullable();
             $table->date('visit_date');
             $table->foreignId('schedule_id');
+            $table->boolean('verified')->default(false)->index();
             $table->timestamps();
         });
     }

@@ -15,7 +15,9 @@ Route::group([
     Route::post("/create",[TicketController::class,"store"]);
     Route::get("/categories/get",[TicketPricingController::class,"index"]);
     Route::get("/session/check",[TicketController::class,"checkSession"]);
-    Route::get("/{ticket}/get",[TicketController::class,"show"])->middleware("auth:api");
+    Route::post("/session/create",[TicketController::class,"storeSession"]);
+    Route::get("/{ticket}/get",[TicketController::class,"getTicket"])->middleware("auth:api");
+    Route::post("/{ticket}/verify",[TicketController::class,"verifyTicket"])->middleware("auth:api");
 });
 
 

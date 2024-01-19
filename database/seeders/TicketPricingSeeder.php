@@ -14,7 +14,7 @@ class TicketPricingSeeder extends Seeder
     public function run(): void
     {
         TicketPricing::create([
-            'type' => 'Anak-anak',
+            'type' => 'Anak-Anak',
             'description' => 'Dibawah 12 tahun.',
             'price' => 115000
         ]);

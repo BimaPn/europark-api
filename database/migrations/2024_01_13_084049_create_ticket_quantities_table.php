@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ticket_quantities', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('ticket_id');
-            $table->foreignId('ticket_pricing_id');
+            $table->string("type");
             $table->integer('quantity');
             $table->bigInteger("total_price");
             $table->timestamps();
