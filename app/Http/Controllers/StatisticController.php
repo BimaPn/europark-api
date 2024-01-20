@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\Collection;
 use App\Models\TicketQuantity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,18 +12,28 @@ class StatisticController extends Controller
 {
     public function getMainStatistic ()
     {
-        $visitorsToday = $this->getVisitorsToday();
-        $thisMonthTicketSold = $this->getThisMonthTicketsSold();
-        $yearIncome = $this->getYearIncome();
-        $bababoy = $this->getLastHalfYearTicketSold();
+        $visitorsToday = [
+            'label' => 'Jumlah pengunjung hari ini.',
+            'total' => $this->getVisitorsToday()
+        ];
+        $thisMonthTicketSold = [
+            'label' => 'Tiket terjual bulan ini',
+            'total' => $this->getThisMonthTicketsSold()
+        ];
+        $yearIncome = [
+            'label' => 'Penghasilan tahun ini',
+            'total' => $this->getYearIncome()
+        ];
+        $collectionsTotal = [
+            'label' => 'Total koleksi museum.',
+            'total' => $this->getTotalCollections()
+        ];
 
         return response()->json([
             "visitorsToday" => $visitorsToday,
             "thisMonthTicketSold" => $thisMonthTicketSold,
             "yearIncome" => $yearIncome,
-            "haha" => Carbon::create()->month(9)->format("F"),
-            "bababoy" => $months,
-            "cibuy" => $bababoy
+            "collectionsTotal" => $collectionsTotal
         ]);
     }
 
@@ -42,7 +53,9 @@ class StatisticController extends Controller
             $result[$monthName] = $ticketCount;
         }
 
-        return $result;
+        return response()->json([
+            'result' => $result
+        ]);
     }
 
     protected function getVisitorsToday ()
@@ -76,6 +89,7 @@ class StatisticController extends Controller
     }
     protected function getTotalCollections ()
     {
-
+        $result = Collection::count();
+        return $result;
     }
 }
