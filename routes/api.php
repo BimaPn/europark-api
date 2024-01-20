@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('/session/status/get',function() {
+    $message = session('status');
+    return response()->json([
+        "message" => $message ?? null
+    ]);
+});
 
 require __DIR__.'/auth.php';
 require __DIR__.'/ticket.php';

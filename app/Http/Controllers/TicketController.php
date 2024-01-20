@@ -69,8 +69,13 @@ class TicketController extends Controller
 
     }
 
-    public function getTicket (Ticket $ticket)
+    public function getTicketVerify (Ticket $ticket)
     {
+        if($ticket->verified === 1) {
+            return response()->json([
+                "message" => "Ticket is already verified"
+            ],409);
+        }
         $result = [
             "name" => $ticket->name,
             "email" => $ticket->email,
@@ -92,12 +97,14 @@ class TicketController extends Controller
     public function verifyTicket (Ticket $ticket)
     {
         if($ticket->verified === 1) {
+            session()->flash("status", "Tiket sudah di verifikasi.");
             return response()->json([
                 "message" => "Ticket is already verified"
-            ]);
+            ],409);
         }
         $ticket->verified = true;
         $ticket->update();
+        session()->flash("status","Tiket telah berhasil di verifikasi.");
         return response()->json([
             "message" => "Success",
             "ticket" => $ticket
