@@ -18,15 +18,24 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::orderBy('created_at', 'desc')
-        ->select('id', 'name', 'email', 'visit_date')
-        ->simplePaginate(15);
+        $tickets = Ticket::select('id', 'name', 'email', 'visit_date','schedule_id')
+        ->with('schedule:id,schedule')
+        ->orderBy('created_at', 'desc')
+        ->paginate(3);
 
-        $tickets->each(function ($ticket) {
-            $ticket->expired = $ticket->checkExpired();
-        });
+        $result = [];
+        foreach ($tickets as $ticket) {
+            $result[] = [
+                'id' => $ticket->id,
+                'name' => $ticket->name,
+                'email' => $ticket->email,
+                'visit_date' => $ticket->visit_date,
+                'expired' => $ticket->checkExpired(),
+                'schedule' => $ticket->schedule->schedule,
+            ];
+        }
         return response()->json([
-            'tickets' => $tickets
+            'result' => $result
         ]);
     }
 

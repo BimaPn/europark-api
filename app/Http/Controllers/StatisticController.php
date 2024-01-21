@@ -41,8 +41,7 @@ class StatisticController extends Controller
     {
         $now = Carbon::now();
         $result = [];
-
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 5; $i >= 0; $i--) {
             $currentMonth = $now->copy()->subMonths($i);
             $monthName = $currentMonth->format('F');
 
@@ -50,11 +49,14 @@ class StatisticController extends Controller
                 ->whereMonth('created_at', $currentMonth->month)
                 ->count();
 
-            $result[$monthName] = $ticketCount;
+            $result[] = [
+                'month' => $monthName,
+                'value' => $ticketCount
+            ];
         }
 
         return response()->json([
-            'result' => $result
+            'result' => $result,
         ]);
     }
 
