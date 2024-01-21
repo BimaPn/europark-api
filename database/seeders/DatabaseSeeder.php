@@ -17,17 +17,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'silly guy',
             'email' => 'michel@gmail.com',
         ]);
-        \App\Models\Ticket::create([
-            'id' => 'f6dbc6a6-be33-4d94-a21b-865e6e4ae765',
-            'name' => 'Tatang Jr',
-            'email' => 'tatang@gmail.com',
-            'identity_card_picture' => 'test.jpg',
-            'whatsapp_number' => "09828738278",
-            'visit_date' => fake()->date(),
-            'schedule_id' => 1
-        ]);
+        $this->call(TicketSeeder::class);
         $this->call(ScheduleSeeder::class);
         $this->call(TicketPricingSeeder::class);
         $this->call(TicketQuantitySeeder::class);
+        $this->call(CollectionSeeder::class);
+        $this->call(CollectionImageSeeder::class);
     }
 }

@@ -37,7 +37,7 @@ class Ticket extends Model
             "email" => $this->email,
             "visit_date" => $this->visit_date,
             "identity_card" => $this->identity_card_picture,
-            "verified" => $this->verified ? true : false,
+            "expired" => $this->checkExpired(),
             "whatsapp_number" => $this->whatsapp_number,
             "institute_name" => $this->institute_name,
             "institute_address" => $this->institute_address,

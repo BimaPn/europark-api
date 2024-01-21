@@ -11,7 +11,7 @@ class StoreCollectionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class StoreCollectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|min:4|max:30',
+            'createdBy' => 'required|min:4|max:30',
+            'discovery_year' => 'required|min:4|max:30',
+            'origin' => 'required|min:3|max:35',
+            'images' => 'required|array',
+            'images.*' => 'image|max:5048',
+            'description' => 'required|min:6|max:5000'
         ];
     }
 }

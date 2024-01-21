@@ -14,4 +14,14 @@ class Collection extends Model
     protected $keyType = 'string';
     protected $primaryKey = 'id';
     public $incrementing = false;
+
+    // Relation
+    public function thumbnail ()
+    {
+        return $this->hasOne(CollectionImage::class)->oldest();
+    }
+    public function images ()
+    {
+        return $this->hasMany(CollectionImage::class);
+    }
 }

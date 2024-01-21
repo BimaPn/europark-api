@@ -13,7 +13,19 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        // $collections = Collection::
+        $collections = Collection::with('thumbnail:collection_id,image')
+        ->select('id','name','createdBy','discovery_year','origin')
+        ->orderBy('created_at', 'desc')
+        ->paginate(15);
+
+        $collections->each(function($collection) {
+            $thumbnail = $collection->thumbnail->image;
+            unset($collection->thumbnail);
+            $collection['thumbnail'] = $thumbnail;
+        });
+        return response()->json([
+            'result' => $collections
+        ]);
     }
 
     /**
@@ -29,7 +41,26 @@ class CollectionController extends Controller
      */
     public function store(StoreCollectionRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        unset($validatedData['images']);
+        $collection = Collection::create($validatedData);
+
+        foreach ($request->file("images") as $image) {
+            $imageOriginalName = $image->getClientOriginalName();
+            $imageUniqueName = Helpers::generateUniqueFileName($imageOriginalName);
+            $image->storeAs("/images/collection",$imageUniqueName);
+            $imagePath = env("APP_URL","http://localhost:8000") . "/storage/images/identity-card/" . $imageUniqueName;
+
+            CollectionImage::create([
+                "collection_id" => $collection->id,
+                "image" => $imagePath
+            ]);
+        }
+
+        return response()->json([
+            "message" => "success",
+            "collection" => $collection
+        ]);
     }
 
     /**

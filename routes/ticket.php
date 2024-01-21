@@ -15,8 +15,8 @@ Route::group([
     Route::get("/categories/get",[TicketPricingController::class,"index"]);
     Route::get("/session/check",[SessionController::class,"checkTicketSession"]);
     Route::post("/session/create",[SessionController::class,"storeTicketSession"]);
-
 });
+
 Route::group([
     'prefix' => 'tickets',
     'middleware' => 'auth:api'
