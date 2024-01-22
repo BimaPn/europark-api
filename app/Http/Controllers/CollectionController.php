@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCollectionRequest;
 use App\Http\Requests\UpdateCollectionRequest;
 use App\Models\Collection;
+use App\Models\CollectionImage;
+use App\Helpers\Helpers;
+use Illuminate\Support\Facades\File;
 
 class CollectionController extends Controller
 {
@@ -49,7 +52,7 @@ class CollectionController extends Controller
             $imageOriginalName = $image->getClientOriginalName();
             $imageUniqueName = Helpers::generateUniqueFileName($imageOriginalName);
             $image->storeAs("/images/collection",$imageUniqueName);
-            $imagePath = env("APP_URL","http://localhost:8000") . "/storage/images/identity-card/" . $imageUniqueName;
+            $imagePath = env("APP_URL","http://localhost:8000") . "/storage/images/collection/" . $imageUniqueName;
 
             CollectionImage::create([
                 "collection_id" => $collection->id,
@@ -59,7 +62,7 @@ class CollectionController extends Controller
 
         return response()->json([
             "message" => "success",
-            "collection" => $collection
+            "collection" => $collection->getPreview()
         ]);
     }
 
@@ -68,7 +71,7 @@ class CollectionController extends Controller
      */
     public function show(Collection $collection)
     {
-        //
+
     }
 
     /**
@@ -76,7 +79,12 @@ class CollectionController extends Controller
      */
     public function edit(Collection $collection)
     {
-        //
+        $_collection = $collection->getPreview();
+        unset($_collection["thumbnail"]);
+        return response()->json([
+            'collection' => $_collection,
+            'oldImages' => $collection->images()->select('id', 'image')->get()
+        ]);
     }
 
     /**
@@ -84,7 +92,36 @@ class CollectionController extends Controller
      */
     public function update(UpdateCollectionRequest $request, Collection $collection)
     {
-        //
+        $validatedData = $request->validated();
+        if($request->has("deletedImages")) {
+            foreach ($request->input("deletedImages") as $id) {
+                $image = CollectionImage::find($id);
+                File::delete(public_path("/storage/images/collection/" . pathinfo($image->image)["basename"]));
+                $image->delete();
+            }
+        }
+        if($request->has("images")) {
+            foreach ($request->file("images") as $image) {
+                $imageOriginalName = $image->getClientOriginalName();
+                $imageUniqueName = Helpers::generateUniqueFileName($imageOriginalName);
+                $image->storeAs("/images/collection",$imageUniqueName);
+                $imagePath = env("APP_URL","http://localhost:8000") . "/storage/images/collection/" . $imageUniqueName;
+
+                CollectionImage::create([
+                    "collection_id" => $collection->id,
+                    "image" => $imagePath
+                ]);
+            }
+        }
+
+        unset($validatedData['images']);
+        unset($validatedData['deletedImages']);
+
+        $collection->update($validatedData);
+        return response()->json([
+            'message' => 'Success.',
+            'collection' => $collection->getPreview()
+        ]);
     }
 
     /**

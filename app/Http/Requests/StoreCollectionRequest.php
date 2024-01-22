@@ -27,7 +27,7 @@ class StoreCollectionRequest extends FormRequest
             'discovery_year' => 'required|min:4|max:30',
             'origin' => 'required|min:3|max:35',
             'images' => 'required|array',
-            'images.*' => 'image|max:5048',
+            'images.*' => 'image',
             'description' => 'required|min:6|max:5000'
         ];
     }

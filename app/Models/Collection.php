@@ -24,4 +24,18 @@ class Collection extends Model
     {
         return $this->hasMany(CollectionImage::class);
     }
+
+    // Custom methods
+    public function getPreview ()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'createdBy' => $this->createdBy,
+            'discovery_year' => $this->discovery_year,
+            'origin' => $this->origin,
+            'thumbnail' => $this->thumbnail->image,
+            'description' => $this->description
+        ];
+    }
 }

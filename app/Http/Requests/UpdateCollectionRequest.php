@@ -11,7 +11,7 @@ class UpdateCollectionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class UpdateCollectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|min:4|max:30',
+            'createdBy' => 'required|min:4|max:30',
+            'discovery_year' => 'required|min:4|max:30',
+            'origin' => 'required|min:3|max:35',
+            'images' => 'nullable|array',
+            'images.*' => 'image',
+            'deletedImages' => 'nullable|array',
+            'deletedImages.*' => 'string',
+            'description' => 'required|min:6|max:5000'
         ];
     }
 }
