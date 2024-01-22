@@ -10,4 +10,5 @@ Route::group([
     Route::get("/{collection}/update/get",[CollectionController::class,"edit"]);
     Route::put("/{collection}/update",[CollectionController::class,"update"]);
     Route::post("/create",[CollectionController::class,"store"]);
+    Route::delete("/{collection}/delete",[CollectionController::class,"destroy"]);
 });

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
+use Illuminate\Support\Facades\File;
 
 class Collection extends Model
 {
@@ -37,5 +38,15 @@ class Collection extends Model
             'thumbnail' => $this->thumbnail->image,
             'description' => $this->description
         ];
+    }
+
+   protected static function booted()
+    {
+        static::deleting(function ($collection) {
+            foreach ($collection->images as $image) {
+                File::delete(public_path("/storage/images/collection/" . pathinfo($image->image)["basename"]));
+            }
+            $collection->images()->delete();
+        });
     }
 }
