@@ -10,8 +10,8 @@ use App\Models\TicketQuantity;
 use App\Helpers\Helpers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-
 use Illuminate\Http\Request;
+
 class TicketController extends Controller
 {
     /**
@@ -22,7 +22,7 @@ class TicketController extends Controller
         $tickets = Ticket::select('id', 'name', 'email', 'visit_date','schedule_id')
         ->with('schedule:id,schedule')
         ->orderBy('created_at', 'desc')
-        ->paginate(15);
+        ->paginate(3);
 
         $result = [];
         foreach ($tickets as $ticket) {
@@ -36,7 +36,10 @@ class TicketController extends Controller
             ];
         }
         return response()->json([
-            'result' => $result
+            'result' => $result,
+            "paginate" => [
+                "lastPage" => $tickets->lastPage()
+            ],
         ]);
     }
 
@@ -46,7 +49,7 @@ class TicketController extends Controller
         $tickets = Ticket::where("name","like","%{$query}%")
         ->with('schedule:id,schedule')
         ->orderBy('created_at', 'desc')
-        ->paginate(15);
+        ->paginate(3);
 
         $result = [];
         foreach ($tickets as $ticket) {
@@ -61,7 +64,10 @@ class TicketController extends Controller
         }
 
         return response()->json([
-            "tickets" => $result
+            "tickets" => $result,
+            "paginate" => [
+                "lastPage" => $tickets->lastPage()
+            ],
         ]);
     }
 

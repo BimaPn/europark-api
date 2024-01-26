@@ -8,6 +8,7 @@ use App\Models\Collection;
 use App\Models\CollectionImage;
 use App\Helpers\Helpers;
 use Illuminate\Support\Facades\File;
+use Illuminate\Http\Request;
 
 class CollectionController extends Controller
 {
@@ -19,7 +20,7 @@ class CollectionController extends Controller
         $collections = Collection::with('thumbnail:collection_id,image')
         ->select('id','name','createdBy','discovery_year','origin')
         ->orderBy('created_at', 'desc')
-        ->paginate(20);
+        ->paginate(4);
 
         $collections->each(function($collection) {
             $thumbnail = $collection->thumbnail->image;
@@ -28,10 +29,35 @@ class CollectionController extends Controller
         });
 
         return response()->json([
-            'result' => $collections
+            'result' => $collections->items(),
+            "paginate" => [
+                "lastPage" => $collections->lastPage()
+            ],
         ]);
     }
 
+    public function search(Request $request)
+    {
+       $query = $request->get("name");
+       $collections = Collection::where("name","like","%{$query}%")
+        ->with('thumbnail:collection_id,image')
+       ->select('id','name','createdBy','discovery_year','origin')
+       ->orderBy('created_at', 'desc')
+       ->paginate(4);
+
+        $collections->each(function($collection) {
+            $thumbnail = $collection->thumbnail->image;
+            unset($collection->thumbnail);
+            $collection['thumbnail'] = $thumbnail;
+        });
+
+        return response()->json([
+            'collections' => $collections->items(),
+            "paginate" => [
+                "lastPage" => $collections->lastPage()
+            ],
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
