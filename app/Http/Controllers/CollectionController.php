@@ -19,13 +19,14 @@ class CollectionController extends Controller
         $collections = Collection::with('thumbnail:collection_id,image')
         ->select('id','name','createdBy','discovery_year','origin')
         ->orderBy('created_at', 'desc')
-        ->paginate(15);
+        ->paginate(20);
 
         $collections->each(function($collection) {
             $thumbnail = $collection->thumbnail->image;
             unset($collection->thumbnail);
             $collection['thumbnail'] = $thumbnail;
         });
+
         return response()->json([
             'result' => $collections
         ]);

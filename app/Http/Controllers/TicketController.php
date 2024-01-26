@@ -11,6 +11,7 @@ use App\Helpers\Helpers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
+use Illuminate\Http\Request;
 class TicketController extends Controller
 {
     /**
@@ -21,7 +22,7 @@ class TicketController extends Controller
         $tickets = Ticket::select('id', 'name', 'email', 'visit_date','schedule_id')
         ->with('schedule:id,schedule')
         ->orderBy('created_at', 'desc')
-        ->paginate(3);
+        ->paginate(15);
 
         $result = [];
         foreach ($tickets as $ticket) {
@@ -36,6 +37,31 @@ class TicketController extends Controller
         }
         return response()->json([
             'result' => $result
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->get("name");
+        $tickets = Ticket::where("name","like","%{$query}%")
+        ->with('schedule:id,schedule')
+        ->orderBy('created_at', 'desc')
+        ->paginate(15);
+
+        $result = [];
+        foreach ($tickets as $ticket) {
+            $result[] = [
+                'id' => $ticket->id,
+                'name' => $ticket->name,
+                'email' => $ticket->email,
+                'visit_date' => $ticket->visit_date,
+                'expired' => $ticket->checkExpired(),
+                'schedule' => $ticket->schedule->schedule,
+            ];
+        }
+
+        return response()->json([
+            "tickets" => $result
         ]);
     }
 

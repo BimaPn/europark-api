@@ -16,10 +16,10 @@ class ScheduleSeeder extends Seeder
             'schedule'=> '09.00 AM - 12.00 PM'
         ]);
         Schedule::create([
-            'schedule'=> '13.00 PM - 16.00 PM'
+            'schedule'=> '01.00 PM - 04.00 PM'
         ]);
         Schedule::create([
-            'schedule'=> '18.00 PM - 21.00 PM'
+            'schedule'=> '06.00 PM - 09.00 PM'
         ]);
     }
 }

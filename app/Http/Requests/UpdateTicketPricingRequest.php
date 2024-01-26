@@ -22,9 +22,9 @@ class UpdateTicketPricingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "categories"=> "required|array",
-            "categories.*.id" => "required|integer",
-            "categories.*.price" => "required|numeric"
+            "pricings"=> "required|array",
+            "pricings.*.id" => "required|integer",
+            "pricings.*.price" => "required|numeric"
         ];
     }
 }

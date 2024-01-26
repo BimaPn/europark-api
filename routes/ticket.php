@@ -21,11 +21,14 @@ Route::group([
     'prefix' => 'tickets',
     'middleware' => 'auth:api'
 ], function ($router) {
+    Route::get("/search",[TicketController::class,"search"]);
+    Route::get("/ticket-pricings/get",[TicketPricingController::class,"getPrices"]);
     Route::get("/get",[TicketController::class,"index"]);
     Route::get("{ticket}/get",[TicketController::class,"show"]);
     Route::get("/{ticket}/verify/get",[TicketController::class,"getTicketVerify"]);
     Route::post("/{ticket}/verify",[TicketController::class,"verifyTicket"]);
-    Route::put("/categories/update",[TicketPricingController::class,"update"]);
+    Route::put("/ticket-pricings/update",[TicketPricingController::class,"update"]);
+
 });
 
 

@@ -10,7 +10,7 @@
 </head>
 <body>
     <p>Hallo {{ $name }} 👋 , give this ticket to the staff to enter the museum.</p>
-    <span class="highlight">Ticket ID : {{ $ticketId }}</span>
+    <div class="highlight">Ticket ID : {{ $ticketId }}</div>
     @php
       $qrCodeAsPng = QrCode::format('png')->size(200)->generate($url)->toHtml();
     @endphp
