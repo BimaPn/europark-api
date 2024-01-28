@@ -27,6 +27,7 @@ class Collection extends Model
     }
 
     // Custom methods
+
     public function getPreview ()
     {
         return [

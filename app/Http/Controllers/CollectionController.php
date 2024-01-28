@@ -18,6 +18,44 @@ class CollectionController extends Controller
     public function index()
     {
         $collections = Collection::with('thumbnail:collection_id,image')
+        ->select('id','name','discovery_year')
+        ->orderBy('created_at', 'desc')
+        ->simplePaginate(15);
+
+        $collections->each(function($collection) {
+            $thumbnail = $collection->thumbnail->image;
+            unset($collection->thumbnail);
+            $collection['thumbnail'] = $thumbnail;
+        });
+
+        return response()->json([
+            "collections" => $collections->items()
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+       $query = $request->get("name");
+       $collections = Collection::where("name","like","%{$query}%")
+        ->with('thumbnail:collection_id,image')
+       ->select('id','name','discovery_year')
+       ->orderBy('created_at', 'desc')
+       ->simplePaginate(15);
+
+        $collections->each(function($collection) {
+            $thumbnail = $collection->thumbnail->image;
+            unset($collection->thumbnail);
+            $collection['thumbnail'] = $thumbnail;
+        });
+
+        return response()->json([
+            'collections' => $collections->items(),
+        ]);
+    }
+
+    public function adminIndex()
+    {
+        $collections = Collection::with('thumbnail:collection_id,image')
         ->select('id','name','createdBy','discovery_year','origin')
         ->orderBy('created_at', 'desc')
         ->paginate(4);
@@ -36,7 +74,7 @@ class CollectionController extends Controller
         ]);
     }
 
-    public function search(Request $request)
+    public function adminSearch(Request $request)
     {
        $query = $request->get("name");
        $collections = Collection::where("name","like","%{$query}%")
@@ -58,17 +96,7 @@ class CollectionController extends Controller
             ],
         ]);
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCollectionRequest $request)
     {
         $validatedData = $request->validated();
@@ -98,7 +126,18 @@ class CollectionController extends Controller
      */
     public function show(Collection $collection)
     {
+        $collection->load("images");
+        $images = $collection->images;
+        $resultImages = [];
 
+        foreach ($images as $image) {
+            $resultImages[] = $image->image;
+        }
+        $collection->resultImages = $resultImages;
+
+        return response()->json([
+            "collection" => $collection,
+        ]);
     }
 
     /**
