@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class TicketSeeder extends Seeder
 {
@@ -18,8 +19,8 @@ class TicketSeeder extends Seeder
             'email' => 'tatang@gmail.com',
             'identity_card_picture' => env("APP_URL","http://localhost:8000") . "/storage/images/identity-card/test.jpg",
             'whatsapp_number' => "09828738278",
-            'visit_date' => fake()->date(),
-            'schedule_id' => 1
+            'visit_date' => Carbon::now()->addDay(),
+            'schedule_id' => 2
         ]);
         \App\Models\Ticket::create([
             'id' => '7ac129cb-41e8-4b0b-9530-d62415c9e878',
@@ -27,7 +28,7 @@ class TicketSeeder extends Seeder
             'email' => 'susianjay@gmail.com',
             'identity_card_picture' => env("APP_URL","http://localhost:8000") . "/storage/images/identity-card/test.jpg",
             'whatsapp_number' => "09828738278",
-            'visit_date' => fake()->date(),
+            'visit_date' => Carbon::now()->addDay(),
             'schedule_id' => 2
         ]);
         \App\Models\Ticket::create([
