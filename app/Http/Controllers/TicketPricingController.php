@@ -16,7 +16,6 @@ class TicketPricingController extends Controller
         }
         return response()->json([
             "result" => $ticketTypes,
-            "maxQuantity" => intval(env("MAX_TICKET_QUANTITY",16))
         ]);
     }
 

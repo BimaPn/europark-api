@@ -37,8 +37,8 @@ class TicketSeeder extends Seeder
             'email' => fake()->email(),
             'identity_card_picture' => env("APP_URL","http://localhost:8000") . "/storage/images/identity-card/test.jpg",
             'whatsapp_number' => "09828738278",
-            'visit_date' => fake()->date(),
-            'schedule_id' => rand(1, 3)
+            'visit_date' => Carbon::now()->addDay(),
+            'schedule_id' => 1
         ]);
         \App\Models\Ticket::create([
             'id' => '6d91527f-5084-4801-a518-952366ad656d',

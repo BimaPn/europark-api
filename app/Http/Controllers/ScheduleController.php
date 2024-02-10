@@ -31,7 +31,7 @@ class ScheduleController extends Controller
                 "id" => $schedule->id,
                 "schedule" => $schedule->schedule,
                 "disabled" => $total > $maxTickets,
-                "haha" => $total
+                "available" => $total > $maxTickets ? 0 : ($maxTickets - $total)
             ];
         }
 

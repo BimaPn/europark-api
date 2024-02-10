@@ -85,12 +85,26 @@ class TicketController extends Controller
     public function store(StoreTicketRequest $request)
     {
         $validatedData = $request->validated();
+
         $session = $request->session()->get("ticket");
         if(!$session) {
             return response()->json([
                 "message" => "Session expired."
             ],419);
         }
+
+        $totalTickets = 0;
+        foreach ($session["quantities"] as $quantity) {
+            $totalTickets += intval($quantity["quantity"]);
+        }
+        $isAvailable = $this->isTicketAvailable($session["visit_date"], $session["schedule_id"], $totalTickets);
+
+        if(!$isAvailable) {
+            return response()->json([
+                "message" => "Tickets are full in visited date."
+            ],409);
+        }
+
         $image = $request->file("identity_card_picture");
         $imageOriginalName = $image->getClientOriginalName();
         $imageUniqueName = Helpers::generateUniqueFileName($imageOriginalName);
@@ -165,5 +179,18 @@ class TicketController extends Controller
             "message" => "Success",
             "ticket" => $ticket
         ]);
+    }
+
+    public function isTicketAvailable ($visit_date, $schedule_id, $ticket_quantity)
+    {
+        $dateToString = Carbon::parse($visit_date)->setTimezone('WIT')->format("Y-m-d");
+        $date = Carbon::createFromFormat('Y-m-d', $dateToString);
+        $totalVisitDateTickets = Ticket::where("schedule_id", $schedule_id)
+            ->whereDate("visit_date", $date)->get()
+            ->flatMap(function ($ticket) {
+                return $ticket->quantity;
+            })->sum("quantity");
+
+        return ($totalVisitDateTickets + $ticket_quantity) <= env("MAX_TICKET_QUANTITY",16);
     }
 }
