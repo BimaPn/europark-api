@@ -19,6 +19,7 @@ class Ticket extends Model
     // Custom Methods
     public function checkExpired ()
     {
+        if($this->verified == 1) return true;
         $now = Carbon::now()->format('Y-m-d');
         return $this->visit_date < $now;
     }

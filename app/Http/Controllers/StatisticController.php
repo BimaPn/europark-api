@@ -13,7 +13,7 @@ class StatisticController extends Controller
     public function getMainStatistic ()
     {
         $visitorsToday = [
-            'label' => 'Jumlah pengunjung hari ini.',
+            'label' => 'Pengunjung hari ini.',
             'total' => $this->getVisitorsToday()
         ];
         $thisMonthTicketSold = [
@@ -62,10 +62,17 @@ class StatisticController extends Controller
 
     protected function getVisitorsToday ()
     {
-        $today = Carbon::now()->toDateString();
+        // $today = Carbon::now()->toDateString();
+        $today = Carbon::parse(Carbon::now())->setTimezone('WIT')->format("Y-m-d");
+        // $total = TicketQuantity::whereDate('created_at', $today)
+        // ->sum('quantity');
 
-        $total = TicketQuantity::whereDate('created_at', $today)
-        ->sum('quantity');
+        $date = Carbon::createFromFormat('Y-m-d', $today);
+
+        $total = Ticket::whereDate("created_at",today())->where("verified",1)->get()
+            ->flatMap(function ($ticket) {
+                return $ticket->quantity;
+            })->sum("quantity");
         return $total;
     }
 

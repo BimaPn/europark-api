@@ -20,7 +20,7 @@ class CollectionController extends Controller
         $collections = Collection::with('thumbnail:collection_id,image')
         ->select('id','name','discovery_year')
         ->orderBy('created_at', 'desc')
-        ->simplePaginate(15);
+        ->simplePaginate(35);
 
         $collections->each(function($collection) {
             $thumbnail = $collection->thumbnail->image;
@@ -40,7 +40,7 @@ class CollectionController extends Controller
         ->with('thumbnail:collection_id,image')
        ->select('id','name','discovery_year')
        ->orderBy('created_at', 'desc')
-       ->simplePaginate(15);
+       ->simplePaginate(35);
 
         $collections->each(function($collection) {
             $thumbnail = $collection->thumbnail->image;
@@ -58,7 +58,7 @@ class CollectionController extends Controller
         $collections = Collection::with('thumbnail:collection_id,image')
         ->select('id','name','createdBy','discovery_year','origin')
         ->orderBy('created_at', 'desc')
-        ->paginate(4);
+        ->paginate(5);
 
         $collections->each(function($collection) {
             $thumbnail = $collection->thumbnail->image;
@@ -81,7 +81,7 @@ class CollectionController extends Controller
         ->with('thumbnail:collection_id,image')
        ->select('id','name','createdBy','discovery_year','origin')
        ->orderBy('created_at', 'desc')
-       ->paginate(4);
+       ->paginate(5);
 
         $collections->each(function($collection) {
             $thumbnail = $collection->thumbnail->image;

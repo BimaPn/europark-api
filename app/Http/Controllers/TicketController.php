@@ -19,10 +19,10 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::select('id', 'name', 'email', 'visit_date','schedule_id')
+        $tickets = Ticket::select('id', 'name', 'email', 'visit_date', 'verified', 'schedule_id')
         ->with('schedule:id,schedule')
         ->orderBy('created_at', 'desc')
-        ->paginate(3);
+        ->paginate(5);
 
         $result = [];
         foreach ($tickets as $ticket) {
@@ -100,6 +100,7 @@ class TicketController extends Controller
         $isAvailable = $this->isTicketAvailable($session["visit_date"], $session["schedule_id"], $totalTickets);
 
         if(!$isAvailable) {
+            $request->session()->forget("ticket");
             return response()->json([
                 "message" => "Tickets are full in visited date."
             ],409);
@@ -112,10 +113,13 @@ class TicketController extends Controller
         $imagePath = env("APP_URL","http://localhost:8000") . "/storage/images/identity-card/" . $imageUniqueName;
         $validatedData["identity_card_picture"] = $imagePath;
 
+        $dateToString = Carbon::parse($session["visit_date"])->setTimezone('WIB')->format("Y-m-d");
+        $date = Carbon::createFromFormat('Y-m-d', $dateToString);
+
         $ticket = Ticket::create([
             ...$validatedData,
             "schedule_id" => $session["schedule_id"],
-            "visit_date" => Carbon::parse($session["visit_date"])
+            "visit_date" => $date
         ]);
 
         foreach ($session["quantities"] as $quantity) {

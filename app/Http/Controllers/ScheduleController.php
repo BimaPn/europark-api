@@ -16,7 +16,7 @@ class ScheduleController extends Controller
 
         $schedules = Schedule::all();
 
-        $dateToString = Carbon::parse($validatedData["visit_date"])->setTimezone('WIT')->format("Y-m-d");
+        $dateToString = Carbon::parse($validatedData["visit_date"])->setTimezone('WIB')->format("Y-m-d");
         $date = Carbon::createFromFormat('Y-m-d', $dateToString);
 
         $result = [];
@@ -30,8 +30,9 @@ class ScheduleController extends Controller
             $result [] = [
                 "id" => $schedule->id,
                 "schedule" => $schedule->schedule,
-                "disabled" => $total > $maxTickets,
-                "available" => $total > $maxTickets ? 0 : ($maxTickets - $total)
+                "disabled" => $total >= $maxTickets,
+                "available" => $total > $maxTickets ? 0 : ($maxTickets - $total),
+                "jir" => $total
             ];
         }
 

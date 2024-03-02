@@ -15,8 +15,8 @@ Route::group([
     'prefix' => 'collections',
     'middleware' => 'auth:api'
 ], function ($router) {
-    Route::get("/admin/get",[CollectionController::class,"adminIndex"]);
-    Route::get("/admin/search",[CollectionController::class,"adminSearch"]);
+    Route::get("/get/admin",[CollectionController::class,"adminIndex"]);
+    Route::get("/search/admin",[CollectionController::class,"adminSearch"]);
     Route::get("/{collection}/update/get",[CollectionController::class,"edit"]);
     Route::put("/{collection}/update",[CollectionController::class,"update"]);
     Route::post("/create",[CollectionController::class,"store"]);
