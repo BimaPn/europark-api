@@ -23,3 +23,4 @@ require __DIR__.'/auth.php';
 require __DIR__.'/ticket.php';
 require __DIR__.'/collection.php';
 require __DIR__.'/statistic.php';
+require __DIR__.'/ticketReport.php';
