@@ -69,29 +69,30 @@ width:15%;
         <span class="title">Laporan Pembelian Tiket Museum</span>
         <span class="title">{{ $message }}</span>
     </div>
-      <table>
+     <table>
         <thead>
             <tr>
                 <th>Nama</th>
                 <th>Email</th>
-                <th class="visit-date">Tgl.Kunjungan</th>
-                <th>Jadwal</th>
-                <th>Kadaluarsa</th>
+                <th>Status</th>
+                <th>Jmlh Pengunjung</th>
+                <th class="visit-date">Total Harga</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($tickets as $ticket)
+        @foreach($tickets as $ticket)
             <tr>
-                <td>{{ $ticket->name }}</td>
-                <td>{{ $ticket->email }}</td>
-                <td>{{ $ticket->visit_date }}</td>
-                <td>{{ $ticket->schedule->schedule }}</td>
-                <td>{{ $ticket->checkExpired() ? "Sudah" : "Belum" }}</td>
+                <td>{{$ticket->name}}</td>
+                <td>{{$ticket->email}}</td>
+                <td>{{ $ticket->checkExpired() ? "Kadaluarsa" : "Aktif" }}</td>
+                <td>{{ $ticket->getTotalQuantity() }}</td>
+                <td>
+                  <span>Rp {{ number_format($ticket->getTotalPrice(), 0, ',', '.') }}</span>
+                </td>
             </tr>
-            @endforeach
+        @endforeach
         </tbody>
     </table>
-
 </body>
 </html>
 

@@ -57,5 +57,21 @@ class Ticket extends Model
         return $this->hasMany(TicketQuantity::class);
     }
 
+    public function getTotalQuantity ()
+    {
+      $totalQuantity = 0;
+      foreach ($this->quantity as $item) {
+        $totalQuantity += $item->quantity;
+      }
+      return $totalQuantity;
+    }
+    public function getTotalPrice ()
+    {
+      $totalPrice = 0;
+      foreach ($this->quantity as $item) {
+        $totalPrice += $item->total_price;
+      }
+      return $totalPrice;
+    }
 
 }

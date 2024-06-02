@@ -153,16 +153,16 @@ Pada bulan November 1985, pakar seni yang berbasis di Berlin Jan Kelch mengumumk
 Pada bulan November 1985, pakar seni yang berbasis di Berlin Jan Kelch mengumumkan bahwa detail penting dalam gaya lukisan itu tidak sesuai dengan gaya karya Rembrandt yang terkenal, dan bahwa lukisan itu mungkin dilukis pada tahun 1650 oleh salah satu murid Rembrandt.
 'Ini bukan palsu,' Kelch menegaskan. “Ini tetap merupakan karya luar biasa yang luar biasa."
         ]);
-        \App\Models\Collection::create([
-            'id' => '1259cda9-6fe5-4642-99b3-6c6480085003',
-            'name' => "Justus Lipsius",
-            'createdBy' => "Justus Lipsius",
-            'discovery_year' => '1547',
-            'origin' => "Belanda",
-            'description' => "Dikategorikan sebagai karya selama bertahun-tahun, keraguan diungkapkan mengenai asal usulnya pada tahun 1984 oleh komisi kurator Belanda yang khusus dibentuk untuk menyelidiki karya Rembrandt yang keasliannya dipertanyakan. Pernyataan itu mereka sampaikan saat melihat lukisan itu di Berlin Barat.
-Pada bulan November 1985, pakar seni yang berbasis di Berlin Jan Kelch mengumumkan bahwa detail penting dalam gaya lukisan itu tidak sesuai dengan gaya karya Rembrandt yang terkenal, dan bahwa lukisan itu mungkin dilukis pada tahun 1650 oleh salah satu murid Rembrandt.
-'Ini bukan palsu,' Kelch menegaskan. “Ini tetap merupakan karya luar biasa yang luar biasa."
-        ]);
+//         \App\Models\Collection::create([
+//             'id' => '1259cda9-6fe5-4642-99b3-6c6480085003',
+//             'name' => "Justus Lipsius",
+//             'createdBy' => "Justus Lipsius",
+//             'discovery_year' => '1547',
+//             'origin' => "Belanda",
+//             'description' => "Dikategorikan sebagai karya selama bertahun-tahun, keraguan diungkapkan mengenai asal usulnya pada tahun 1984 oleh komisi kurator Belanda yang khusus dibentuk untuk menyelidiki karya Rembrandt yang keasliannya dipertanyakan. Pernyataan itu mereka sampaikan saat melihat lukisan itu di Berlin Barat.
+// Pada bulan November 1985, pakar seni yang berbasis di Berlin Jan Kelch mengumumkan bahwa detail penting dalam gaya lukisan itu tidak sesuai dengan gaya karya Rembrandt yang terkenal, dan bahwa lukisan itu mungkin dilukis pada tahun 1650 oleh salah satu murid Rembrandt.
+// 'Ini bukan palsu,' Kelch menegaskan. “Ini tetap merupakan karya luar biasa yang luar biasa."
+//         ]);
         \App\Models\Collection::create([
             'id' => '33a89882-cb9d-4f04-9344-320e8d605f12',
             'name' => "The Fall of Phaeton",

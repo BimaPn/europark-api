@@ -22,12 +22,12 @@ class StoreCollectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:4|max:30',
+            'name' => 'required|min:4|max:30|string',
             'createdBy' => 'required|min:4|max:30',
             'discovery_year' => 'required|min:4|max:30',
-            'origin' => 'required|min:3|max:35',
+            'origin' => 'required|min:3|max:35|string',
             'images' => 'required|array',
-            'images.*' => 'image',
+            'images.*' => 'required|mimes:jpeg,jpg,png',
             'description' => 'required|min:6|max:5000'
         ];
     }

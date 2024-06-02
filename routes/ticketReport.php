@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'prefix' => 'tickets/report',
-    'middleware' => 'api'
+    'middleware' => 'auth:api'
 ], function ($router) {
     Route::get("/year-available",[TicketReportController::class,"checkAvailableYears"]);
     Route::get("/month-available",[TicketReportController::class,"checkAvailableMonths"]);
